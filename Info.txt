@@ -1,0 +1,8 @@
+https://cloud.google.com/vpc/
+https://trinitytuts.com/build-first-web-service-php/
+https://www.apachefriends.org/de/index.html
+https://www.apachefriends.org/de/download_success.html
+https://www.w3schools.com/jquerymobile/jquerymobile_transitions.asp
+http://localhost/phpmyadmin/db_structure.php?server=1&db=tuts_rest
+http://localhost/rest/info.php?uid=1
+https://www.tutorialspoint.com/jsp/jsp_syntax.htm
