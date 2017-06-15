@@ -50,3 +50,32 @@
 | ModalContext | 2017-06-15 22:53:13.637 | org.eclipse.thym.core | /debug | org.eclipse.thym.core.HybridCore | trace | 182 | Completed WidgetModel.getWidgetForRead it 0ms |
 | ModalContext | 2017-06-15 22:53:13.641 | org.eclipse.thym.core | /debug | org.eclipse.thym.core.HybridCore | trace | 182 | Really updating the installed plugin list |
 | ModalContext | 2017-06-15 22:53:13.644 | org.eclipse.thym.core | /debug | org.eclipse.thym.core.HybridCore | trace | 182 | Updated plugin list in 3 ms |
+# !SESSION 2017-06-15 22:58:50.654
+# version: 1.1
+# verbose: true
+# The following option strings are specified for this debug session:
+# 	null
+| Worker-9 | 2017-06-15 22:58:50.654 | org.eclipse.thym.core | /debug | org.eclipse.thym.core.HybridCore | trace | 182 | Completed WidgetModel.getWidgetForRead it 66ms |
+| Worker-9 | 2017-06-15 22:58:50.681 | org.eclipse.thym.core | /debug | org.eclipse.thym.core.HybridCore | trace | 182 | Really updating the installed plugin list |
+| Worker-9 | 2017-06-15 22:58:50.683 | org.eclipse.thym.core | /debug | org.eclipse.thym.core.HybridCore | trace | 182 | Updated plugin list in 2 ms |
+| Worker-9 | 2017-06-15 22:58:50.705 | org.eclipse.thym.core | /debug | org.eclipse.thym.core.HybridCore | trace | 182 | Completed WidgetModel.getWidgetForRead it 0ms |
+| Worker-9 | 2017-06-15 22:58:50.708 | org.eclipse.thym.core | /debug | org.eclipse.thym.core.HybridCore | trace | 182 | Really updating the installed plugin list |
+| Worker-9 | 2017-06-15 22:58:50.709 | org.eclipse.thym.core | /debug | org.eclipse.thym.core.HybridCore | trace | 182 | Updated plugin list in 1 ms |
+| Worker-9 | 2017-06-15 22:58:50.746 | org.eclipse.thym.core | /debug | org.eclipse.thym.core.HybridCore | trace | 182 | Completed WidgetModel.getWidgetForRead it 0ms |
+| Worker-9 | 2017-06-15 22:58:50.749 | org.eclipse.thym.core | /debug | org.eclipse.thym.core.HybridCore | trace | 182 | Really updating the installed plugin list |
+| Worker-9 | 2017-06-15 22:58:50.750 | org.eclipse.thym.core | /debug | org.eclipse.thym.core.HybridCore | trace | 182 | Updated plugin list in 1 ms |
+| Worker-9 | 2017-06-15 22:58:50.769 | org.eclipse.thym.core | /debug | org.eclipse.thym.core.HybridCore | trace | 182 | Completed WidgetModel.getWidgetForRead it 0ms |
+| Worker-9 | 2017-06-15 22:58:50.772 | org.eclipse.thym.core | /debug | org.eclipse.thym.core.HybridCore | trace | 182 | Really updating the installed plugin list |
+| Worker-9 | 2017-06-15 22:58:50.774 | org.eclipse.thym.core | /debug | org.eclipse.thym.core.HybridCore | trace | 182 | Updated plugin list in 2 ms |
+| Worker-9 | 2017-06-15 22:58:50.807 | org.eclipse.thym.core | /debug | org.eclipse.thym.core.HybridCore | trace | 182 | Completed WidgetModel.getWidgetForRead it 0ms |
+| Worker-9 | 2017-06-15 22:58:50.810 | org.eclipse.thym.core | /debug | org.eclipse.thym.core.HybridCore | trace | 182 | Really updating the installed plugin list |
+| Worker-9 | 2017-06-15 22:58:50.812 | org.eclipse.thym.core | /debug | org.eclipse.thym.core.HybridCore | trace | 182 | Updated plugin list in 2 ms |
+| Worker-9 | 2017-06-15 22:58:50.873 | org.eclipse.thym.core | /debug | org.eclipse.thym.core.HybridCore | trace | 182 | Completed WidgetModel.getWidgetForRead it 0ms |
+| Worker-9 | 2017-06-15 22:58:50.876 | org.eclipse.thym.core | /debug | org.eclipse.thym.core.HybridCore | trace | 182 | Really updating the installed plugin list |
+| Worker-9 | 2017-06-15 22:58:50.877 | org.eclipse.thym.core | /debug | org.eclipse.thym.core.HybridCore | trace | 182 | Updated plugin list in 1 ms |
+| Worker-9 | 2017-06-15 22:58:51.346 | org.eclipse.thym.core | /debug | org.eclipse.thym.core.HybridCore | trace | 182 | Completed WidgetModel.getWidgetForRead it 1ms |
+| Worker-9 | 2017-06-15 22:58:51.348 | org.eclipse.thym.core | /debug | org.eclipse.thym.core.HybridCore | trace | 182 | Really updating the installed plugin list |
+| Worker-9 | 2017-06-15 22:58:51.349 | org.eclipse.thym.core | /debug | org.eclipse.thym.core.HybridCore | trace | 182 | Updated plugin list in 1 ms |
+| ModalContext | 2017-06-15 22:59:15.323 | org.eclipse.thym.core | /debug | org.eclipse.thym.core.HybridCore | trace | 182 | Completed WidgetModel.getWidgetForRead it 0ms |
+| ModalContext | 2017-06-15 22:59:15.327 | org.eclipse.thym.core | /debug | org.eclipse.thym.core.HybridCore | trace | 182 | Really updating the installed plugin list |
+| ModalContext | 2017-06-15 22:59:15.329 | org.eclipse.thym.core | /debug | org.eclipse.thym.core.HybridCore | trace | 182 | Updated plugin list in 2 ms |
