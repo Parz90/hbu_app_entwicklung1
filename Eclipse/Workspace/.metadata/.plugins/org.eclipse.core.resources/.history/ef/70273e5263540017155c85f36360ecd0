@@ -1,0 +1,45 @@
+.round-button-overview {
+    display:block;
+    width:100px;
+    height:100px;
+    line-height:90px;
+    border: 2px solid #f5f5f5;
+    border-radius: 50%;
+    color:#f5f5f5;
+    text-align:center;
+    text-decoration:none;
+    background: #464646;
+    box-shadow: 0 0 20px white;
+    font-size:100px;
+    font-weight:bold;
+    padding:8%;
+    margin:5%;
+}
+
+.round-button-add {
+    display:block;
+    width:80px;
+    height:80px;
+    line-height:75px;
+    border: 2px solid #f5f5f5;
+    border-radius: 50%;
+    color:#f5f5f5;
+    text-align:center;
+    text-decoration:none;
+    background: #464646;
+    box-shadow: 0 0 15px white;
+    font-size:16px;
+    font-weight:bold;
+    padding:5%;
+    margin:5%;
+}
+
+.round-button:hover {
+    background: #262626;
+}
+
+.center {
+  display: block;
+  align-items: center;
+  justify-content: center;
+}

@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *">
+        <meta name="format-detection" content="telephone=no">
+        <meta name="msapplication-tap-highlight" content="no">
+        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+        <link rel="stylesheet" type="text/css" href="css/jquery.mobile-1.4.5.min.css"><link rel="stylesheet" href="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
+        <link rel="stylesheet" href="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
+        <link rel="stylesheet" type="text/css" href="css/jquery.mobile.icons.min.css">
+        <link rel="stylesheet" type="text/css" href="css/iBudget.css">
+        <link rel="stylesheet" type="text/css" href="css/iBudget.min.css">
+        <link rel="stylesheet" type="text/css" href="css/styles.css">
+        <script type="text/javascript" src="js/jquery-1.11.1.min.js"></script>
+        <script type="text/javascript" src="js/jquery.mobile-1.4.5.min.js"></script>
+        <script>
+        function clickCounter() {
+        	if(typeof(Storage) !== "undefined") {
+        		if (localStorage.clickcount) {
+        			localStorage.clickcount = Number(localStorage.clickcount)+1;
+        			} else {
+        				localStorage.clickcount = 1;
+        				}
+        		document.getElementById("result").innerHTML = "You have clicked the button " + localStorage.clickcount + " time(s).";
+        		} else {
+        			document.getElementById("result").innerHTML = "Sorry, your browser does not support web storage...";
+        			}
+        	}
+        </script>
+        <title>JQuery Trail</title>
+    </head>
+    <body>
+        <div data-role="page" data-theme="a" id="page1">
+        <div data-role="header">
+        <a href="#page3" data-transition="fade" data-icon="home"></a>
+        <a href="#page2" data-transition="fade" data-icon= "gear"></a>
+        </div>
+        
+        <div data-role="content">
+        <h1 align="center">Uebersicht</h1>
+        <div class="ui-grid-b">
+        <div class="ui-block-a" align="center">
+        <label><b>Ausgabe Gestern</b></label>
+        <label>50.00 Fr.</label>
+        </div>
+        <div class="ui-block-b"  align="center">
+        <label><b>Budget Monat</b></label>
+        <label>2500.00 Fr.</label>
+        <label><b>Budget Heute</b></label>
+        <label>50.00 Fr.</label>
+        </div>
+        <div class="ui-block-c"  align="center">
+        <label><b>Budget Morgen</b></label>
+        <label>50.00 Fr.</label>
+        </div>
+        </div>
+        <div class="ui-grid-solo">
+        <div class="ui-block-a" align="center">
+		<a class="round-button-overview">+</a>
+		<p>Einkommen</p>
+		<a class="round-button-overview">-</a>
+		<p>Ausgaben</p>
+        </div>
+        </div>
+        </div>
+        
+        <div data-role="footer">
+        <p>Copyright by Parz</p>        
+        </div>
+        </div>
+
+        <div data-role="page" data-theme="a" id="page2">
+        <div data-role="header">
+        <a href="#page1" data-transition="fade" data-icon="home"></a>
+        <a href="#page3" data-transition="fade" data-icon= "gear"></a>
+        </div>
+        <div data-role="content">
+        <h2>Test</h2>
+        <p><button type="button">Push</button></p>
+        <input type="text" name="fname">
+        <a class="round-button-add" style="color: #ff0000;">Geschenk</a>
+        </div>
+        <div data-role="footer">
+        <p>Copyright by Parz</p>        
+        </div>
+        </div>
+        
+        <div data-role="page" data-theme="a" id="page3">
+        <div data-role="header">
+        <a href="#page2" data-transition="fade" data-icon="home"></a>
+        <a href="#page4" data-transition="fade" data-icon= "gear"></a>
+        </div>
+        <div data-role="content">
+        <h2>Test</h2>
+        </div>
+        <div data-role="footer">
+        <p>Copyright by Parz</p>        
+        </div>
+        </div>
+        
+        <div data-role="page" data-theme="a" id="page4">
+        <div data-role="header">
+        <a href="#page3" data-transition="fade" data-icon="home"></a>
+        <a href="#page5" data-transition="fade" data-icon= "gear"></a>
+        </div>
+        <div data-role="content">
+        <h2>Test</h2>
+        </div>
+        <div data-role="footer">
+        <p>Copyright by Parz</p>        
+        </div>
+        </div>
+        
+        <div data-role="page" data-theme="a" id="page5">
+        <div data-role="header">
+        <a href="#page5" data-transition="fade" data-icon="home"></a>
+        <a href="#page1" data-transition="fade" data-icon= "settings"></a>
+        </div>
+        <div data-role="content">
+        <h2>Test</h2>
+        </div>
+        <div data-role="footer">
+        <p>Copyright by Parz</p>        
+        </div>
+        </div>
+    </body>
+</html>

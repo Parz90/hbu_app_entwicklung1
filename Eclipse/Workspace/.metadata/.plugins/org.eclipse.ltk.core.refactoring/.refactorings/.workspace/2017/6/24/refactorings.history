@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Delete 5 resources" deleteContents="false" description="Delete 5 resources" element1="/myBudgetTest/www/css/index.css" element2="/myBudgetTest/www/css/jquery.mobile-1.4.5.min.css" element3="/myBudgetTest/www/css/jquery.mobile.icons.min.css" element4="/myBudgetTest/www/css/ThemeParz1.css" element5="/myBudgetTest/www/css/ThemeParz1.min.css" flags="7" id="org.eclipse.ltk.core.refactoring.delete.resources" resources="5" stamp="1497779500979"/>
+</session>
