@@ -38,6 +38,14 @@
     background: #262626;
 }
 
+.header {
+	margin-top: 20px;
+}
+
+.header-link {
+	height: 20px;
+}
+
 .center {
   display: block;
   align-items: center;
