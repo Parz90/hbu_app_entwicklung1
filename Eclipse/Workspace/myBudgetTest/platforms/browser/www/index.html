@@ -1,40 +1,25 @@
 <!DOCTYPE html>
 <html>
     <head>
-    	<meta charset="UTF-8">
-        <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *">
+    		<meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *">
         <meta name="format-detection" content="telephone=no">
         <meta name="msapplication-tap-highlight" content="no">
         <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
-        <link rel="stylesheet" type="text/css" href="css/jquery.mobile-1.4.5.min.css"><link rel="stylesheet" href="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
-        <link rel="stylesheet" href="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
+        <link rel="stylesheet" type="text/css" href="css/jquery.mobile-1.4.5.min.css">
         <link rel="stylesheet" type="text/css" href="css/jquery.mobile.icons.min.css">
         <link rel="stylesheet" type="text/css" href="css/iBudget.css">
         <link rel="stylesheet" type="text/css" href="css/iBudget.min.css">
         <link rel="stylesheet" type="text/css" href="css/styles.css">
         <script type="text/javascript" src="js/jquery-1.11.1.min.js"></script>
         <script type="text/javascript" src="js/jquery.mobile-1.4.5.min.js"></script>
-        <script>
-        function clickCounter() {
-        	if(typeof(Storage) !== "undefined") {
-        		if (localStorage.clickcount) {
-        			localStorage.clickcount = Number(localStorage.clickcount)+1;
-        			} else {
-        				localStorage.clickcount = 1;
-        				}
-        		document.getElementById("result").innerHTML = "You have clicked the button " + localStorage.clickcount + " time(s).";
-        		} else {
-        			document.getElementById("result").innerHTML = "Sorry, your browser does not support web storage...";
-        			}
-        	}
-        </script>        
+        <script type="text/javascript" src="js/myscript.js"></script>        
         <title>iBudget</title>
     </head>
-    <body>
+    <body onload="onLoad()">
         <div data-role="page" data-theme="a" id="page1">
-        	<div data-role="header">
-        		<a href="#page4" data-transition="fade" data-icon="eye"></a>
-        		<a href="#page5" data-transition="fade" data-icon= "gear"></a>
+        	<div data-role="header" class="header">
+        		<a class="header-link" href="#page4" data-transition="fade" data-icon="eye"></a>
+        		<a class="header-link" href="#page5" data-transition="fade" data-icon= "gear" data-iconpos="right"></a>
         	</div>
         
         	<div data-role="content">
@@ -48,7 +33,7 @@
         				<label><b>Budget Monat</b></label>
         				<label>2500.00 Fr.</label>
         				<label><b>Budget Heute</b></label>
-        				<label>50.00 Fr.</label>
+        				<label id="todayBudget"></label>
         			</div>
         			<div class="ui-block-c"  align="center">
         				<label><b>Budget Morgen</b></label>
@@ -58,29 +43,31 @@
         		<div class="ui-grid-solo">
         			<div class="ui-block-a" align="center">
         				<a class="round-button-overview" href="#page2">-</a>
-						<p>Ausgaben</p>
-						<a class="round-button-overview" href="#page3">+</a>
-						<p>Einkommen</p>
+					<p>Ausgaben</p>
+					<a class="round-button-overview" href="#page3">+</a>
+					<p>Einkommen</p>
+					<p><button onclick="clickCounter()" type="button">Click me!</button></p>
+        				<div id="result"></div>
         			</div>
         		</div>
         	</div>
         
-        	<div data-role="footer">
+        	<div data-role="footer" data-position="fixed">
         		<p>Copyright by Parz</p>        
         	</div>
         </div>
 
         <div data-role="page" data-theme="a" id="page2">
-        	<div data-role="header">
-        		<a href="#page1" data-transition="fade" data-icon="home"></a>
-        		<a href="#page5" data-transition="fade" data-icon="gear"></a>
+        	<div data-role="header" class="header">
+        		<a class="header-link" href="#page1" data-transition="fade" data-icon="home"></a>
+        		<a class="header-link" href="#page5" data-transition="fade" data-icon="gear" data-iconpos="right"></a>
         	</div>
         
         	<div data-role="content">
         		<h1 align="center">Ausgaben</h1>
         		<div class="ui-grid-solo" align="center">
         			<div class="ui-block-a">
-        				<input type="text" name="spent" value="Ausgabe eintragen...">
+        				<input type="text" name="spent" placeholder="Ausgabe eintragen...">
         			</div>
         		</div>
         		<div class="ui-grid-a">
@@ -97,63 +84,301 @@
         		</div>
         	</div>
         	
-        	<div data-role="footer">
+        	<div data-role="footer" data-position="fixed">
         		<p>Copyright by Parz</p>        
         	</div>
         </div>
         
         <div data-role="page" data-theme="a" id="page3">
-        	<div data-role="header">
-        		<a href="#page1" data-transition="fade" data-icon="home"></a>
-        		<a href="#page5" data-transition="fade" data-icon= "gear"></a>
+        	<div data-role="header" class="header">
+        		<a class="header-link" href="#page1" data-transition="fade" data-icon="home"></a>
+        		<a class="header-link" href="#page5" data-transition="fade" data-icon= "gear" data-iconpos="right"></a>
         	</div>
 
         	<div data-role="content">
         		<h1 align="center">Einnahmen</h1>
         		<div class="ui-grid-solo" align="center">
         			<div class="ui-block-a">
-        				<input type="text" name="income" value="Einnahme eintragen...">
+        				<input type="number" name="income" id="income" placeholder="Einnahme eintragen...">
         			</div>
         		</div>
         		<div class="ui-grid-a">
         			<div class="ui-block-a" align="center">
-        				<a class="round-button-add" style="color: #ff0000;" href="#page1">Geschenk</a>
-        				<a class="round-button-add" style="color: #ff0000;" href="#page1">Verkauf</a>
+        				<a class="round-button-add" style="color: #ff0000;" href="#page1" id="test">Geschenk</a>
+        				<a class="round-button-add" style="color: #ff0000;" href="#page1" onclick="addIncome();">Verkauf</a>
            			</div>
         			<div class="ui-block-b" align="center">
-        				<a class="round-button-add" style="color: #ff0000;" href="#page1">Investition</a>
-        				<a class="round-button-add" style="color: #ff0000;" href="#page1">Andere</a>
+        				<a class="round-button-add" style="color: #ff0000;" href="#page1" onclick="addIncome();">Investition</a>
+        				<a class="round-button-add" style="color: #ff0000;" href="#page1" onclick="addIncome();">Andere</a>
         			</div>
         		</div>
         	</div>
 
-        	<div data-role="footer">
+        	<div data-role="footer" data-position="fixed">
         		<p>Copyright by Parz</p>        
         	</div>
         </div>
         
         <div data-role="page" data-theme="a" id="page4">
-        <div data-role="header">
-        <a href="#page1" data-transition="fade" data-icon="home"></a>
-        <a href="#page5" data-transition="fade" data-icon= "gear"></a>
+        <div data-role="header" class="header">
+        <a class="header-link" href="#page1" data-transition="fade" data-icon="home"></a>
+        <a class="header-link" href="#page5" data-transition="fade" data-icon= "gear" data-iconpos="right"></a>
         </div>
         <div data-role="content">
-        <h2>Test</h2>
+        <h1>Grafik</h1>
         </div>
-        <div data-role="footer">
+        <div data-role="footer" data-position="fixed">
         <p>Copyright by Parz</p>        
         </div>
         </div>
         
         <div data-role="page" data-theme="a" id="page5">
-        <div data-role="header">
-        <a href="#page1" data-transition="fade" data-icon="home"></a>
+        <div data-role="header" class="header">
+        		<a class="header-link" href="#page1" data-transition="fade" data-icon="home"></a>
         </div>
         <div data-role="content">
-        <h2>Test</h2>
+        		<h1>Einstellungen</h1>
+        		
+        		<div class="ui-grid-b">
+        			<div class="ui-block-a" align="center"><label><b>Interval:</b></label></div>
+        			<div class="ui-block-b" align="center"><select name="interval" id="interval" data-mini="true">
+        					<option value="1">1</option>
+        					<option value="2">2</option>
+        					<option value="3">3</option>
+        					<option value="4">4</option>
+        					<option value="5">5</option>
+        					<option value="6">6</option>
+        					<option value="7">7</option>
+        					<option value="8">8</option>
+        					<option value="9">9</option>
+        					<option value="10">10</option>
+        					<option value="11">11</option>
+        					<option value="12">12</option>
+        					<option value="13">13</option>
+        					<option value="14">14</option>
+        					<option value="15">15</option>
+        					<option value="16">16</option>
+        					<option value="17">17</option>
+        					<option value="18">18</option>
+        					<option value="19">19</option>
+        					<option value="20">20</option>
+        					<option value="21">21</option>
+        					<option value="22">22</option>
+        					<option value="23">23</option>
+        					<option value="24">24</option>
+        					<option value="25">25</option>
+        					<option value="26">26</option>
+        					<option value="27">27</option>
+        					<option value="28">28</option>
+        					<option value="29">29</option>
+        					<option value="30">30</option>
+    					</select></div>
+				<div class="ui-block-c" align="center"><label><input name="checkbox-0 " type="checkbox" data-mini="true">Vor WochenE</label></div>
+        			<div class="ui-block-a" align="center"><label><b>Erinnerung:</b></label></div>
+        			<div class="ui-block-b" align="center"><label></label></div>
+        			<div class="ui-block-c" align="center"><label></label></div>
+        			<div class="ui-block-a" align="center"><select name="reminderHour" id="reminderHour" data-mini="true">
+        					<option value="0">0</option>
+        					<option value="1">1</option>
+        					<option value="2">2</option>
+        					<option value="3">3</option>
+        					<option value="4">4</option>
+        					<option value="5">5</option>
+        					<option value="6">6</option>
+        					<option value="7">7</option>
+        					<option value="8">8</option>
+        					<option value="9">9</option>
+        					<option value="10">10</option>
+        					<option value="11">11</option>
+        					<option value="12">12</option>
+        					<option value="13">13</option>
+        					<option value="14">14</option>
+        					<option value="15">15</option>
+        					<option value="16">16</option>
+        					<option value="17">17</option>
+        					<option value="18">18</option>
+        					<option value="19">19</option>
+        					<option value="20">20</option>
+        					<option value="21">21</option>
+        					<option value="22">22</option>
+        					<option value="23">23</option>
+    					</select></div>
+        				<div class="ui-block-b" align="center"><select name="reminderMin" id="reminderMin" data-mini="true">
+        					<option value="1">1</option>
+        					<option value="2">2</option>
+        					<option value="3">3</option>
+        					<option value="4">4</option>
+        					<option value="5">5</option>
+        					<option value="6">6</option>
+        					<option value="7">7</option>
+        					<option value="8">8</option>
+        					<option value="9">9</option>
+        					<option value="10">10</option>
+        					<option value="11">11</option>
+        					<option value="12">12</option>
+        					<option value="13">13</option>
+        					<option value="14">14</option>
+        					<option value="15">15</option>
+        					<option value="16">16</option>
+        					<option value="17">17</option>
+        					<option value="18">18</option>
+        					<option value="19">19</option>
+        					<option value="20">20</option>
+        					<option value="21">21</option>
+        					<option value="22">22</option>
+        					<option value="23">23</option>
+        					<option value="24">24</option>
+        					<option value="25">25</option>
+        					<option value="26">26</option>
+        					<option value="27">27</option>
+        					<option value="28">28</option>
+        					<option value="29">29</option>
+        					<option value="30">30</option>
+        					<option value="31">31</option>
+        					<option value="32">32</option>
+        					<option value="33">33</option>
+        					<option value="34">34</option>
+        					<option value="35">35</option>
+        					<option value="36">36</option>
+        					<option value="37">37</option>
+        					<option value="38">38</option>
+        					<option value="39">39</option>
+        					<option value="40">40</option>
+        					<option value="41">41</option>
+        					<option value="42">42</option>
+        					<option value="43">43</option>
+        					<option value="44">44</option>
+        					<option value="45">45</option>
+        					<option value="46">46</option>
+        					<option value="47">47</option>
+        					<option value="48">48</option>
+        					<option value="49">49</option>
+        					<option value="50">50</option>
+        					<option value="51">51</option>
+        					<option value="52">52</option>
+        					<option value="53">53</option>
+        					<option value="54">54</option>
+        					<option value="55">55</option>
+        					<option value="56">56</option>
+        					<option value="57">57</option>
+        					<option value="58">58</option>
+        					<option value="59">59</option>
+    					</select>
+        			</div>
+        			<div class="ui-block-c" align="center"><select name="reminderSec" id="reminderSec" data-mini="true">
+        					<option value="1">1</option>   
+        					<option value="2">2</option>   
+        					<option value="3">3</option>   
+        					<option value="4">4</option>   
+        					<option value="5">5</option>   
+        					<option value="6">6</option>   
+        					<option value="7">7</option>   
+        					<option value="8">8</option>   
+        					<option value="9">9</option>   
+        					<option value="10">10</option> 
+        					<option value="11">11</option> 
+        					<option value="12">12</option> 
+        					<option value="13">13</option> 
+        					<option value="14">14</option> 
+        					<option value="15">15</option> 
+        					<option value="16">16</option> 
+        					<option value="17">17</option> 
+        					<option value="18">18</option> 
+        					<option value="19">19</option> 
+        					<option value="20">20</option> 
+        					<option value="21">21</option> 
+        					<option value="22">22</option> 
+        					<option value="23">23</option> 
+        					<option value="24">24</option> 
+        					<option value="25">25</option> 
+        					<option value="26">26</option> 
+        					<option value="27">27</option> 
+        					<option value="28">28</option> 
+        					<option value="29">29</option> 
+        					<option value="30">30</option> 
+        					<option value="31">31</option> 
+        					<option value="32">32</option> 
+        					<option value="33">33</option> 
+        					<option value="34">34</option> 
+        					<option value="35">35</option> 
+        					<option value="36">36</option> 
+        					<option value="37">37</option> 
+        					<option value="38">38</option> 
+        					<option value="39">39</option> 
+        					<option value="40">40</option> 
+        					<option value="41">41</option> 
+        					<option value="42">42</option> 
+        					<option value="43">43</option> 
+        					<option value="44">44</option> 
+        					<option value="45">45</option> 
+        					<option value="46">46</option> 
+        					<option value="47">47</option> 
+        					<option value="48">48</option> 
+        					<option value="49">49</option> 
+        					<option value="50">50</option> 
+        					<option value="51">51</option> 
+        					<option value="52">52</option> 
+        					<option value="53">53</option> 
+        					<option value="54">54</option> 
+        					<option value="55">55</option> 
+        					<option value="56">56</option> 
+        					<option value="57">57</option> 
+        					<option value="58">58</option> 
+        					<option value="59">59</option> 
+    					</select></div>
+        		</div>
+        		
+			<div class="ui-grid-a">
+        			<div class="ui-block-a" align="center"><label><b>Fixe Einkommen:</b></label></div>
+        			<div class="ui-block-b" align="center"><input type="text" name="fixIncome" placeholder="Fixes Einkommen..."></div>
+        			<div class="ui-block-a" align="center"><label><b>Fixe Kosten:</b></label></div>
+        			<div class="ui-block-b" align="center"><input type="text" name="fixCost" placeholder="Fixe Kosten..."></div>
+        			<div class="ui-block-a" align="center"><label><b>Sparziel:</b></label></div>
+        			<div class="ui-block-b" align="center"><input type="text" name="fixSave" placeholder="Sparziel..."></div>
+        		</div>
+        		
+        		<div>
+        			<label><b>Kostenfaktor in Tage:</b></label>
+        			<label>1x = n 1-fache Ausgabe an diesem Tag.</label>
+        		</div>
+        		
+			<div class="ui-grid-d">
+        			<div class="ui-block-a" align="center">
+        				<label><b>Mo</b></label>
+        				<input type="text" name="factorMonday" value="1">
+           		</div>
+        			<div class="ui-block-b" align="center">
+        				<label><b>Di</b></label>
+        				<input type="text" name="factorThuesday" value="1">
+           		</div>
+        			<div class="ui-block-c" align="center">
+        				<label><b>Mi</b></label>
+        				<input type="text" name="factorWednesday" value="1">
+           		</div>
+        			<div class="ui-block-d" align="center">
+        				<label><b>Do</b></label>
+        				<input type="text" name="factorThursday" value="1">
+           		</div>
+        			<div class="ui-block-e" align="center">
+        				<label><b>Fr</b></label>
+        				<input type="text" name="factorFriday" value="3">
+           		</div>
+        		</div>
+        		
+			<div class="ui-grid-a">
+        			<div class="ui-block-a" align="center">
+        				<label><b>Sa</b></label>
+        				<input type="text" name="factorSaturday" value="3">
+           		</div>
+        			<div class="ui-block-b" align="center">
+        				<label><b>So</b></label>
+        				<input type="text" name="factorSunday" value="2">
+           		</div>
+        		</div>
+        		
         </div>
-        <div data-role="footer">
-        <p>Copyright by Parz</p>        
+        <div data-role="footer" data-position="fixed">
+        		<p>Copyright by Parz</p>        
         </div>
         </div>
     </body>
