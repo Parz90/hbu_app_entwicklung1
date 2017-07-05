@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-    		<meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *">
+        <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *">
         <meta name="format-detection" content="telephone=no">
         <meta name="msapplication-tap-highlight" content="no">
         <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
@@ -12,13 +12,13 @@
         <link rel="stylesheet" type="text/css" href="css/styles.css">
         <script type="text/javascript" src="js/jquery-1.11.1.min.js"></script>
         <script type="text/javascript" src="js/jquery.mobile-1.4.5.min.js"></script>
-        <script type="text/javascript" src="js/myscript.js"></script>        
+        <script type="text/javascript" src="js/myScript.js"></script>        
         <title>iBudget</title>
     </head>
-    <body onload="onLoad()">
+    <body>
         <div data-role="page" data-theme="a" id="page1">
         	<div data-role="header" class="header">
-        		<a class="header-link" href="#page4" data-transition="fade" data-icon="eye"></a>
+        		<a class="header-link" href="#page4" data-transition="fade" data-icon="eye" onclick="reset();"></a>
         		<a class="header-link" href="#page5" data-transition="fade" data-icon= "gear" data-iconpos="right"></a>
         	</div>
         
@@ -27,17 +27,17 @@
         		<div class="ui-grid-b">
         			<div class="ui-block-a" align="center">
         				<label><b>Ausgabe Gestern</b></label>
-        				<label>50.00 Fr.</label>
+        				<label id="spentYesterday"></label>
         			</div>
         			<div class="ui-block-b"  align="center">
         				<label><b>Budget Monat</b></label>
-        				<label>2500.00 Fr.</label>
+        				<label id="budget"></label>
         				<label><b>Budget Heute</b></label>
         				<label id="todayBudget"></label>
         			</div>
         			<div class="ui-block-c"  align="center">
         				<label><b>Budget Morgen</b></label>
-        				<label>50.00 Fr.</label>
+        				<label id="tomorowBudget"></label>
         			</div>
         		</div>
         		<div class="ui-grid-solo">
@@ -46,8 +46,6 @@
 					<p>Ausgaben</p>
 					<a class="round-button-overview" href="#page3">+</a>
 					<p>Einkommen</p>
-					<p><button onclick="clickCounter()" type="button">Click me!</button></p>
-        				<div id="result"></div>
         			</div>
         		</div>
         	</div>
@@ -67,19 +65,19 @@
         		<h1 align="center">Ausgaben</h1>
         		<div class="ui-grid-solo" align="center">
         			<div class="ui-block-a">
-        				<input type="text" name="spent" placeholder="Ausgabe eintragen...">
+        				<input type="number" name="spent" id="spent" placeholder="Ausgabe eintragen...">
         			</div>
         		</div>
         		<div class="ui-grid-a">
         			<div class="ui-block-a" align="center">
-        				<a class="round-button-add" style="color: #ff0000;" href="#page1">Verpflegung</a>
-        				<a class="round-button-add" style="color: #ff0000;" href="#page1">Auto</a>
-        				<a class="round-button-add" style="color: #ff0000;" href="#page1">Shopping</a>
+        				<a class="round-button-add" style="color: #ff0000;" href="#page1" onclick="saveSpent('Verpflegung');">Verpflegung</a>
+        				<a class="round-button-add" style="color: #ff0000;" href="#page1" onclick="saveSpent('Auto');">Auto</a>
+        				<a class="round-button-add" style="color: #ff0000;" href="#page1" onclick="saveSpent('Shopping');">Shopping</a>
         			</div>
         			<div class="ui-block-b" align="center">
-        				<a class="round-button-add" style="color: #ff0000;" href="#page1">Einkaufen</a>
-        				<a class="round-button-add" style="color: #ff0000;" href="#page1">Wohnung</a>
-        				<a class="round-button-add" style="color: #ff0000;" href="#page1">Andere</a>
+        				<a class="round-button-add" style="color: #ff0000;" href="#page1" onclick="saveSpent('Einkaufen');">Einkaufen</a>
+        				<a class="round-button-add" style="color: #ff0000;" href="#page1" onclick="saveSpent('Wohnung');">Wohnung</a>
+        				<a class="round-button-add" style="color: #ff0000;" href="#page1" onclick="saveSpent('Andere');">Andere</a>
         			</div>
         		</div>
         	</div>
@@ -104,12 +102,12 @@
         		</div>
         		<div class="ui-grid-a">
         			<div class="ui-block-a" align="center">
-        				<a class="round-button-add" style="color: #ff0000;" href="#page1" id="test">Geschenk</a>
-        				<a class="round-button-add" style="color: #ff0000;" href="#page1" onclick="addIncome();">Verkauf</a>
+        				<a class="round-button-add" style="color: #ff0000;" href="#page1" onclick="saveIncome('Geschenk');">Geschenk</a>
+        				<a class="round-button-add" style="color: #ff0000;" href="#page1" onclick="saveIncome('Verkauf');">Verkauf</a>
            			</div>
         			<div class="ui-block-b" align="center">
-        				<a class="round-button-add" style="color: #ff0000;" href="#page1" onclick="addIncome();">Investition</a>
-        				<a class="round-button-add" style="color: #ff0000;" href="#page1" onclick="addIncome();">Andere</a>
+        				<a class="round-button-add" style="color: #ff0000;" href="#page1" onclick="saveIncome('Investition');">Investition</a>
+        				<a class="round-button-add" style="color: #ff0000;" href="#page1" onclick="saveIncome('Andere');">Andere</a>
         			</div>
         		</div>
         	</div>
@@ -134,7 +132,7 @@
         
         <div data-role="page" data-theme="a" id="page5">
         <div data-role="header" class="header">
-        		<a class="header-link" href="#page1" data-transition="fade" data-icon="home"></a>
+        		<a class="header-link" href="#page1" data-transition="fade" data-icon="home" onclick="calculate();"></a>
         </div>
         <div data-role="content">
         		<h1>Einstellungen</h1>
@@ -330,11 +328,11 @@
         		
 			<div class="ui-grid-a">
         			<div class="ui-block-a" align="center"><label><b>Fixe Einkommen:</b></label></div>
-        			<div class="ui-block-b" align="center"><input type="text" name="fixIncome" placeholder="Fixes Einkommen..."></div>
+        			<div class="ui-block-b" align="center"><input type="text" name="fixIncome" id="fixIncome" placeholder="Fixes Einkommen..."></div>
         			<div class="ui-block-a" align="center"><label><b>Fixe Kosten:</b></label></div>
-        			<div class="ui-block-b" align="center"><input type="text" name="fixCost" placeholder="Fixe Kosten..."></div>
+        			<div class="ui-block-b" align="center"><input type="text" name="fixCost" id="fixCost" placeholder="Fixe Kosten..."></div>
         			<div class="ui-block-a" align="center"><label><b>Sparziel:</b></label></div>
-        			<div class="ui-block-b" align="center"><input type="text" name="fixSave" placeholder="Sparziel..."></div>
+        			<div class="ui-block-b" align="center"><input type="text" name="fixSaving" id="fixSaving" placeholder="Sparziel..."></div>
         		</div>
         		
         		<div>
@@ -345,34 +343,34 @@
 			<div class="ui-grid-d">
         			<div class="ui-block-a" align="center">
         				<label><b>Mo</b></label>
-        				<input type="text" name="factorMonday" value="1">
+        				<input type="text" id="facMonday" name="factorMonday" value="1">
            		</div>
         			<div class="ui-block-b" align="center">
         				<label><b>Di</b></label>
-        				<input type="text" name="factorThuesday" value="1">
+        				<input type="text" id="facTuesday" name="factorThuesday" value="1">
            		</div>
         			<div class="ui-block-c" align="center">
         				<label><b>Mi</b></label>
-        				<input type="text" name="factorWednesday" value="1">
+        				<input type="text" id="facWednessday" name="factorWednesday" value="1">
            		</div>
         			<div class="ui-block-d" align="center">
         				<label><b>Do</b></label>
-        				<input type="text" name="factorThursday" value="1">
+        				<input type="text" id="facThursday" name="factorThursday" value="1">
            		</div>
         			<div class="ui-block-e" align="center">
         				<label><b>Fr</b></label>
-        				<input type="text" name="factorFriday" value="3">
+        				<input type="text" id="facFriday" name="factorFriday" value="3">
            		</div>
         		</div>
         		
 			<div class="ui-grid-a">
         			<div class="ui-block-a" align="center">
         				<label><b>Sa</b></label>
-        				<input type="text" name="factorSaturday" value="3">
+        				<input type="text" id="facSaturday" name="factorSaturday" value="3">
            		</div>
         			<div class="ui-block-b" align="center">
         				<label><b>So</b></label>
-        				<input type="text" name="factorSunday" value="2">
+        				<input type="text" id="facSunday" name="factorSunday" value="2">
            		</div>
         		</div>
         		
@@ -380,6 +378,6 @@
         <div data-role="footer" data-position="fixed">
         		<p>Copyright by Parz</p>        
         </div>
-        </div>
+        </div>  
     </body>
 </html>
