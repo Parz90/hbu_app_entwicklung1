@@ -1,20 +1,55 @@
+// Author:  				Parthiapn Nagulanandan
+// Projectname: 			myBudget
+// Date: 				09.07.2017
+// Version:				V1.2
+
+// Variables which is used in different function and need to be initialized at the beginning.
 var incomeList;
 var spentList;
 
+// Function which clears the Local Storage und sets all HTML Elements to Default Value.
 function reset() {
 	localStorage.clear();
 	incomeList = [];
 	spentList = [];
-	localStorage.incomeList = incomeList;
-	localStorage.spentList = spentList;
+	localStorage.incomeList = JSON.stringify(incomeList);
+	localStorage.spentList = JSON.stringify(spentList);
+	document.getElementById("spentYesterday").innerHTML = 0;
+	document.getElementById("budget").innerHTML = 0;
+	document.getElementById("todayBudget").innerHTML = 0;
+	document.getElementById("tomorowBudget").innerHTML = 0;
+	document.getElementById("spent").value = 0;
+	document.getElementById("income").value = 0;
+	document.getElementById("fixIncome").value = 0;
+	document.getElementById("fixCost").value = 0;
+	document.getElementById("fixSaving").value = 0;
+	document.getElementById("facMonday").value = 1;
+	document.getElementById("facTuesday").value = 1;
+	document.getElementById("facWednessday").value = 1;
+	document.getElementById("facThursday").value = 1;
+	document.getElementById("facFriday").value = 1;
+	document.getElementById("facSaturday").value = 1;
+	document.getElementById("facSunday").value = 1;
+	
+	alert("myBudget wurde erfolgreich zurückgesetzt!");
 }
 
+// Function which will be called before Resetting the Application. A Confirm Dialog will Pop Up to confirm the Reset Command.
+function confirmReset() {
+    var txt;
+    var r = confirm("Wollen Sie wirklich myBudget zurücksetzen?");
+    if (r == true) {
+    	reset();
+    }
+}
+
+// Function which calls several functions which is used to calculate the Budget.
 function calculate() {
-	saveSettings();
+	incomeList = [];
+	spentList = [];
 	countIncomePeriod();
 	countSpentPeriod();
 	remainingDays();
-	//calculateFactor();
 	
 	var currentDate = new Date();
 	var currentDay = currentDate.getDate();
@@ -26,12 +61,13 @@ function calculate() {
 	var spentToday = countSpentDay(todayDate);
 	var incomeToday = countIncomeDay(todayDate);
 	var budget = localStorage.fixIncome - localStorage.fixCost - localStorage.fixSaving;
-	document.getElementById("budget").innerHTML = budget - +localStorage.spentPeriod + +localStorage.incomePeriod + incomeToday - spentToday;
-	document.getElementById("todayBudget").innerHTML = ((budget - +localStorage.spentPeriod + +localStorage.incomePeriod) / +localStorage.remainingDays) + incomeToday - spentToday;
-	document.getElementById("spentYesterday").innerHTML = spentYesterday;
-	document.getElementById("tomorowBudget").innerHTML = (budget - +localStorage.spentPeriod + +localStorage.incomePeriod + incomeToday - spentToday) / (+localStorage.remainingDays - 1);
+	document.getElementById("budget").innerHTML = parseInt(budget - +localStorage.spentPeriod + +localStorage.incomePeriod + incomeToday - spentToday);
+	document.getElementById("todayBudget").innerHTML = parseInt(((budget - +localStorage.spentPeriod + +localStorage.incomePeriod) / +localStorage.remainingDays) + incomeToday - spentToday);
+	document.getElementById("spentYesterday").innerHTML = parseInt(spentYesterday);
+	document.getElementById("tomorowBudget").innerHTML = parseInt((budget - +localStorage.spentPeriod + +localStorage.incomePeriod + incomeToday - spentToday) / (+localStorage.remainingDays - 1));
 }
 
+// Function which calculate the remaining Days of the current Budget Calculation Period.
 function remainingDays() {
 	var currentDate = new Date();
 	var currentDaysOfMonth = daysInMonth(currentDate.getMonth() + 1, currentDate.getYear());
@@ -40,28 +76,42 @@ function remainingDays() {
 	
 	if(currentDay > localStorage.interval) {
 		localStorage.totDays = currentDaysOfMonth;
-		localStorage.remainingDays = currentDaysOfMonth - (currentDaysOfMonth - currentDay);
+		localStorage.remainingDays = +localStorage.interval + +(currentDaysOfMonth - currentDay);
 	} else {
 		localStorage.totDays = prevDaysOfMonth;
-		localStorage.remainingDays = prevDaysOfMonth - currentDay - (prevDaysOfMonth - localStorage.interval)
+		localStorage.remainingDays = +localStorage.interval - +currentDay;
 	}
 }
 
+// Function which returns the value of the Day of the specified Month.
 function daysInMonth(month, year) {
     return new Date(year, month, 0).getDate();
 }
-
-function saveSettings() {
+// Function which recovers all the settings from Local Storage to App (GUI).
+function recoverSettings() {
 	if (typeof (Storage) !== "undefined") {
-		localStorage.fixIncome = document.getElementById("fixIncome").value;
-		localStorage.fixCost = document.getElementById("fixCost").value;
-		localStorage.fixSaving = document.getElementById("fixSaving").value;
-		localStorage.interval = document.getElementById("interval").value;
+		document.getElementById("fixIncome").value = localStorage.fixIncome;
+		document.getElementById("fixCost").value = localStorage.fixCost;
+		document.getElementById("fixSaving").value = localStorage.fixSaving;
+		document.getElementById("interval").selectedIndex = localStorage.interval - 1;
 	} else {
 		alert("Ihr Browser unterstützt LocalStage nicht!!!");
 	}
 }
 
+// Function which saves all the settings in the Local Storage.
+function saveSettings() {
+	if (typeof (Storage) !== "undefined") {
+		localStorage.fixIncome = document.getElementById("fixIncome").value;
+		localStorage.fixCost = document.getElementById("fixCost").value;
+		localStorage.fixSaving = document.getElementById("fixSaving").value;
+		localStorage.interval = document.getElementById("interval").selectedIndex + 1;
+	} else {
+		alert("Ihr Browser unterstützt LocalStage nicht!!!");
+	}
+}
+
+// Function which initializes the income variables in Local Storage(deprecated: need to remove soon).
 function initIncome() {
 	if (localStorage.incomeGeschenk === undefined) {
 		localStorage.incomeGeschenk = Number(0);
@@ -77,37 +127,40 @@ function initIncome() {
 		}
 }
 
+// Function which saves Incomes.
 function saveIncome(incomeType) {
 	var currentDate = new Date();
 	initIncome();
 	
 	if (localStorage.incomeList != "") {
-		incomeList = Array(localStorage.incomeList);
+		incomeList = JSON.parse(localStorage.incomeList);
 	}	
 	if (typeof (Storage) !== "undefined") {
 		var timestamp = new Date();
 		var incomeObject;
 		if (incomeType === "Geschenk") {
 			incomeObject = {type:incomeType, timestamp:timestamp, value: +document.getElementById("income").value};
-			incomeList.push(JSON.stringify(incomeObject));
+			incomeList.push(incomeObject);
 		} else if (incomeType === "Investition") {
 			incomeObject = {type:incomeType, timestamp:timestamp, value: +document.getElementById("income").value};
-			incomeList.push(JSON.stringify(incomeObject));
+			incomeList.push(incomeObject);
 		} else if (incomeType === "Verkauf") {
 			incomeObject = {type:incomeType, timestamp:timestamp, value: +document.getElementById("income").value};
-			incomeList.push(JSON.stringify(incomeObject));
+			incomeList.push(incomeObject);
 		} else {
 			incomeObject = {type:incomeType, timestamp:timestamp, value: +document.getElementById("income").value};
-			incomeList.push(JSON.stringify(incomeObject));
+			incomeList.push(incomeObject);
 		}
 
 		document.getElementById("income").value = 0;
-		localStorage.incomeList = incomeList;
+		localStorage.incomeList = JSON.stringify(incomeList);
+		incomeList = [];
 	} else {
 		alert("Ihr Browser unterstützt LocalStorage nicht!!!");
 	}
 }
 
+// Function which calculates all the incomes from the set period.
 function countIncomePeriod() {
 	var currentDate = new Date();
 	var currentDaysOfMonth = daysInMonth(currentDate.getMonth() + 1, currentDate.getYear());
@@ -116,13 +169,16 @@ function countIncomePeriod() {
 	var currentMonth = currentDate.getMonth() + 1;
 	var currentYear = currentDate.getFullYear();
 	var incomeObj;
+	if (localStorage.incomeList != "") {
+		incomeList = JSON.parse(localStorage.incomeList);
+	}	
 	
 	localStorage.incomePeriod = 0;
 	if(currentDay < localStorage.interval) {
-		var startDate = new Date(currentYear, currentMonth - 1, localStorage.interval);
-		var endDate = new Date(currentYear, currentMonth, localStorage.interval);
+		var startDate = new Date(currentYear, currentMonth - 2, localStorage.interval);
+		var endDate = new Date(currentYear, currentMonth - 1, currentDay - 1);
 		for (x in incomeList) {
-			var incomeObj = JSON.parse(incomeList[x]);
+			var incomeObj = incomeList[x];
 			var timestampAsDate = incomeObj.timestamp;
 			timestampAsDate = new Date(timestampAsDate);
 			if(timestampAsDate > startDate && timestampAsDate < endDate) {
@@ -134,10 +190,10 @@ function countIncomePeriod() {
 			}
 		}
 	} else {
-		var startDate = new Date(currentYear, currentMonth, localStorage.interval);
-		var endDate = new Date(currentYear, currentMonth + 1, localStorage.interval);
+		var startDate = new Date(currentYear, currentMonth - 1, localStorage.interval);
+		var endDate = new Date(currentYear, currentMonth, currentDay - 1);
 		for (x in incomeList) {
-			var incomeObj = JSON.parse(incomeList[x]);
+			var incomeObj = incomeList[x];
 			var timestampAsDate = incomeObj.timestamp;
 			timestampAsDate = new Date(timestampAsDate);
 			if(timestampAsDate > startDate && timestampAsDate < endDate) {
@@ -149,8 +205,11 @@ function countIncomePeriod() {
 			}
 		}
 	}
+	localStorage.incomeList = JSON.stringify(incomeList);
+	incomeList = [];
 }
 
+//Function which initializes the spent variables in Local Storage(deprecated: need to remove soon).
 function initSpent() {
 	if (localStorage.spentVerpflegung === undefined) {
 		localStorage.spentVerpflegung = Number(0);
@@ -172,43 +231,46 @@ function initSpent() {
 		}
 }
 
+// Function which saves the set Spents.
 function saveSpent(spentType) {
 	var currentDate = new Date();
 	initSpent();
 	
 	if (localStorage.spentList != "") {
-		spentList = Array(localStorage.spentList);
+		spentList = JSON.parse(localStorage.spentList);
 	}	
 	if (typeof (Storage) !== "undefined") {
 		var timestamp = new Date();
 		var spentObject;
 		if (spentType === "Verpflegung") {
 			spentObject = {type:spentType, timestamp:timestamp, value: +document.getElementById("spent").value};
-			spentList.push(JSON.stringify(spentObject));
+			spentList.push(spentObject);
 		} else if (spentType === "Einkaufen") {
 			spentObject = {type:spentType, timestamp:timestamp, value: +document.getElementById("spent").value};
-			spentList.push(JSON.stringify(spentObject));
+			spentList.push(spentObject);
 		} else if (spentType === "Auto") {
 			spentObject = {type:spentType, timestamp:timestamp, value: +document.getElementById("spent").value};
-			spentList.push(JSON.stringify(spentObject));
+			spentList.push(spentObject);
 		} else if (spentType === "Wohnung") {
 			spentObject = {type:spentType, timestamp:timestamp, value: +document.getElementById("spent").value};
-			spentList.push(JSON.stringify(spentObject));
+			spentList.push(spentObject);
 		} else if (spentType === "Shopping") {
 			spentObject = {type:spentType, timestamp:timestamp, value: +document.getElementById("spent").value};
-			spentList.push(JSON.stringify(spentObject));
+			spentList.push(spentObject);
 		} else {
 			spentObject = {type:spentType, timestamp:timestamp, value: +document.getElementById("spent").value};
-			spentList.push(JSON.stringify(spentObject));
+			spentList.push(spentObject);
 		}
 
 		document.getElementById("spent").value = 0;
-		localStorage.spentList = spentList;
+		localStorage.spentList = JSON.stringify(spentList);
+		spentList = [];
 	} else {
 		alert("Ihr Browser unterstützt LocalStage nicht!!!");
 	}
 }
 
+// Function which calculates the spent money in the specified period.
 function countSpentPeriod() {
 	var currentDate = new Date();
 	var currentDaysOfMonth = daysInMonth(currentDate.getMonth() + 1, currentDate.getYear());
@@ -217,13 +279,16 @@ function countSpentPeriod() {
 	var currentMonth = currentDate.getMonth() + 1;
 	var currentYear = currentDate.getFullYear();
 	var spentObj;
+	if (localStorage.spentList != "") {
+		spentList = JSON.parse(localStorage.spentList);
+	}	
 	
 	localStorage.spentPeriod = 0;
 	if(currentDay < localStorage.interval) {
-		var startDate = new Date(currentYear, currentMonth - 1, localStorage.interval);
-		var endDate = new Date(currentYear, currentMonth, localStorage.interval);
+		var startDate = new Date(currentYear, currentMonth - 2, localStorage.interval);
+		var endDate = new Date(currentYear, currentMonth - 1, currentDay - 1);
 		for (x in spentList) {
-			var spentObj = JSON.parse(spentList[x]);
+			var spentObj = spentList[x];
 			var timestampAsDate = spentObj.timestamp;
 			timestampAsDate = new Date(timestampAsDate);
 			if(timestampAsDate > startDate && timestampAsDate < endDate) {
@@ -235,10 +300,10 @@ function countSpentPeriod() {
 			}
 		}
 	} else {
-		var startDate = new Date(currentYear, currentMonth, localStorage.interval);
-		var endDate = new Date(currentYear, currentMonth + 1, localStorage.interval);
-		for (x in incomeList) {
-			var spentObj = JSON.parse(spentList[x]);
+		var startDate = new Date(currentYear, currentMonth - 1, localStorage.interval);
+		var endDate = new Date(currentYear, currentMonth - 1, currentDay - 1);
+		for (x in spentList) {
+			var spentObj = spentList[x];
 			var timestampAsDate = spentObj.timestamp;
 			timestampAsDate = new Date(timestampAsDate);
 			if(timestampAsDate > startDate && timestampAsDate < endDate) {
@@ -250,8 +315,11 @@ function countSpentPeriod() {
 			}
 		}
 	}
+	localStorage.spentList = JSON.stringify(spentList);
+	spentList = [];
 }
 
+// Function which calculates the spent money of the specified date.
 function countSpentDay(date) {
 	var selectedDate = date;
 	var selectedDay = selectedDate.getDate();
@@ -259,8 +327,12 @@ function countSpentDay(date) {
 	var selectedYear = selectedDate.getFullYear();
 	var spentObj = 0;
 	var spentAmount = 0;
+	if (localStorage.spentList != "") {
+		spentList = JSON.parse(localStorage.spentList);
+	}	
+	
 	for (x in spentList) {
-		var spentObj = JSON.parse(spentList[x]);
+		var spentObj = spentList[x];
 		var timestampAsDate = spentObj.timestamp;
 		timestampAsDate = new Date(timestampAsDate);
 		var timestampAsDay = timestampAsDate.getDate();
@@ -270,9 +342,12 @@ function countSpentDay(date) {
 			spentAmount += spentObj.value;
 		}
 	}
+	localStorage.spentList = JSON.stringify(spentList);
+	spentList = [];
 	return spentAmount;
 }
 
+//Function which calculates the incomes of the specified date.
 function countIncomeDay(date) {
 	var selectedDate = date;
 	var selectedDay = selectedDate.getDate();
@@ -280,8 +355,12 @@ function countIncomeDay(date) {
 	var selectedYear = selectedDate.getFullYear();
 	var incomeObj = 0;
 	var incomeAmount = 0;
+	if (localStorage.incomeList != "") {
+		incomeList = JSON.parse(localStorage.incomeList);
+	}	
+	
 	for (x in incomeList) {
-		var incomeObj = JSON.parse(incomeList[x]);
+		var incomeObj = incomeList[x];
 		var timestampAsDate = incomeObj.timestamp;
 		timestampAsDate = new Date(timestampAsDate);
 		var timestampAsDay = timestampAsDate.getDate();
@@ -291,94 +370,7 @@ function countIncomeDay(date) {
 			incomeAmount += incomeObj.value;
 		}
 	}
+	localStorage.incomeList = JSON.stringify(incomeList);
+	incomeList = [];
 	return incomeAmount;
-}
-
-// Additional Functions which is planned after MLZ
-// --------------------------------------------------------------------------------------------------------------------------------
-
-function calculateFactor() {
-	var currentDate = new Date();
-	var currentDaysOfMonth = daysInMonth(currentDate.getMonth() + 1, currentDate.getYear());
-	var prevDaysOfMonth = daysInMonth(currentDate.getMonth(), currentDate.getYear());
-	var nextDaysOfMonth = daysInMonth(currentDate.getMonth() + 2, currentDate.getYear());
-	var currentDay = currentDate.getDate();
-	var currentMonth = currentDate.getMonth() + 1;
-	var currentYear = currentDate.getFullYear();
-	var spentObj;
-	var startDate;
-	var endDate;
-	var weekday;
-	var dayCounter;
-	
-	if(currentDay < localStorage.interval) {
-		startDate = new Date(currentYear, currentMonth - 1, localStorage.interval);
-		endDate = new Date(currentYear, currentMonth, localStorage.interval);
-		for (var d = startDate; d <= endDate; d.setDate(d.getDate() + 1)) {
-			weekday = d.getDay();
-			dayCounter = 0;
-			switch(weekday) {
-			case 0:
-				dayCounter += +document.getElementById("facMonday").value;
-				break;
-			case 1:
-				dayCounter += +document.getElementById("facTuesday").value;
-				break;
-			case 2:
-				dayCounter += +document.getElementById("facWednessday").value;
-				break;
-			case 3:
-				dayCounter += +document.getElementById("facThursday").value;
-				break;
-			case 4:
-				dayCounter += +document.getElementById("facFriday").value;
-				break;
-			case 5:
-				dayCounter += +document.getElementById("facSaturday").value;
-				break;
-			case 6:
-				dayCounter += +document.getElementById("facSunday").value;
-				break;
-			default:
-				dayCounter += 1;
-			}
-		}
-		localStorage.totDays = prevDaysOfMonth;
-		localStorage.remainingDays = dayCounter;
-		
-	} else {
-		startDate = new Date(currentYear, currentMonth, localStorage.interval);
-		endDate = new Date(currentYear, currentMonth + 1, localStorage.interval);
-		for (var d = startDate; d <= endDate; d.setDate(d.getDate() + 1)) {
-			weekday = d.getDay();
-			dayCounter = 0;
-			switch(weekday) {
-			case 0:
-				dayCounter += +document.getElementById("facMonday").value;
-				break;
-			case 1:
-				dayCounter += +document.getElementById("facTuesday").value;
-				break;
-			case 2:
-				dayCounter += +document.getElementById("facWednessday").value;
-				break;
-			case 3:
-				dayCounter += +document.getElementById("facThursday").value;
-				break;
-			case 4:
-				dayCounter += +document.getElementById("facFriday").value;
-				break;
-			case 5:
-				dayCounter += +document.getElementById("facSaturday").value;
-				break;
-			case 6:
-				dayCounter += +document.getElementById("facSunday").value;
-				break;
-			default:
-				dayCounter += 1;
-			}
-		}
-		localStorage.totDays = currentDaysOfMonth;
-		localStorage.remainingDays = dayCounter;
-	}
 }
