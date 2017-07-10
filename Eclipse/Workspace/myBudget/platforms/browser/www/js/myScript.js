@@ -1,4 +1,4 @@
-// Author:  				Parthiapn Nagulanandan
+// Author:  				Parthipan Nagulanandan
 // Projectname: 			myBudget
 // Date: 				09.07.2017
 // Version:				V1.2
@@ -57,14 +57,14 @@ function calculate() {
 	var currentYear = currentDate.getFullYear();
 	var yesterdayDate = new Date(currentYear, currentMonth, currentDay - 1);
 	var todayDate = new Date(currentYear, currentMonth, currentDay);
-	var spentYesterday = countSpentDay(yesterdayDate);
-	var spentToday = countSpentDay(todayDate);
-	var incomeToday = countIncomeDay(todayDate);
+	localStorage.spentYesterday = countSpentDay(yesterdayDate);
+	localStorage.spentToday = countSpentDay(todayDate);
+	localStorage.incomeToday = countIncomeDay(todayDate);
 	var budget = localStorage.fixIncome - localStorage.fixCost - localStorage.fixSaving;
-	document.getElementById("budget").innerHTML = parseInt(budget - +localStorage.spentPeriod + +localStorage.incomePeriod + incomeToday - spentToday);
-	document.getElementById("todayBudget").innerHTML = parseInt(((budget - +localStorage.spentPeriod + +localStorage.incomePeriod) / +localStorage.remainingDays) + incomeToday - spentToday);
-	document.getElementById("spentYesterday").innerHTML = parseInt(spentYesterday);
-	document.getElementById("tomorowBudget").innerHTML = parseInt((budget - +localStorage.spentPeriod + +localStorage.incomePeriod + incomeToday - spentToday) / (+localStorage.remainingDays - 1));
+	document.getElementById("budget").innerHTML = parseInt(budget - +localStorage.spentPeriod + +localStorage.incomePeriod + +localStorage.incomeToday - +localStorage.spentToday);
+	document.getElementById("todayBudget").innerHTML = parseInt(((budget - +localStorage.spentPeriod + +localStorage.incomePeriod) / +localStorage.remainingDays) + +localStorage.incomeToday - localStorage.spentToday);
+	document.getElementById("spentYesterday").innerHTML = parseInt(+localStorage.spentYesterday);
+	document.getElementById("tomorowBudget").innerHTML = parseInt((budget - +localStorage.spentPeriod + +localStorage.incomePeriod + +localStorage.incomeToday - +localStorage.spentToday) / (+localStorage.remainingDays - 1));
 }
 
 // Function which calculate the remaining Days of the current Budget Calculation Period.
@@ -122,8 +122,8 @@ function initIncome() {
 	if (localStorage.incomeVerkauf === undefined) {
 		localStorage.incomeVerkauf = Number(0);
 		}
-	if (localStorage.spentAndere === undefined) {
-		localStorage.spentAndere = Number(0);
+	if (localStorage.incomeAndere === undefined) {
+		localStorage.incomeAndere = Number(0);
 		}
 }
 
@@ -176,7 +176,7 @@ function countIncomePeriod() {
 	localStorage.incomePeriod = 0;
 	if(currentDay < localStorage.interval) {
 		var startDate = new Date(currentYear, currentMonth - 2, localStorage.interval);
-		var endDate = new Date(currentYear, currentMonth - 1, currentDay - 1);
+		var endDate = new Date(currentYear, currentMonth - 1, currentDay);
 		for (x in incomeList) {
 			var incomeObj = incomeList[x];
 			var timestampAsDate = incomeObj.timestamp;
@@ -191,7 +191,7 @@ function countIncomePeriod() {
 		}
 	} else {
 		var startDate = new Date(currentYear, currentMonth - 1, localStorage.interval);
-		var endDate = new Date(currentYear, currentMonth, currentDay - 1);
+		var endDate = new Date(currentYear, currentMonth, currentDay);
 		for (x in incomeList) {
 			var incomeObj = incomeList[x];
 			var timestampAsDate = incomeObj.timestamp;
@@ -286,7 +286,7 @@ function countSpentPeriod() {
 	localStorage.spentPeriod = 0;
 	if(currentDay < localStorage.interval) {
 		var startDate = new Date(currentYear, currentMonth - 2, localStorage.interval);
-		var endDate = new Date(currentYear, currentMonth - 1, currentDay - 1);
+		var endDate = new Date(currentYear, currentMonth - 1, currentDay);
 		for (x in spentList) {
 			var spentObj = spentList[x];
 			var timestampAsDate = spentObj.timestamp;
@@ -301,7 +301,7 @@ function countSpentPeriod() {
 		}
 	} else {
 		var startDate = new Date(currentYear, currentMonth - 1, localStorage.interval);
-		var endDate = new Date(currentYear, currentMonth - 1, currentDay - 1);
+		var endDate = new Date(currentYear, currentMonth - 1, currentDay);
 		for (x in spentList) {
 			var spentObj = spentList[x];
 			var timestampAsDate = spentObj.timestamp;
@@ -373,4 +373,263 @@ function countIncomeDay(date) {
 	localStorage.incomeList = JSON.stringify(incomeList);
 	incomeList = [];
 	return incomeAmount;
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+//Optional Implementations ---------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
+
+function countSpentCategoryPeriod() {
+	var currentDate = new Date();
+	var currentDaysOfMonth = daysInMonth(currentDate.getMonth() + 1, currentDate.getYear());
+	var prevDaysOfMonth = daysInMonth(currentDate.getMonth(), currentDate.getYear());
+	var currentDay = currentDate.getDate();
+	var currentMonth = currentDate.getMonth() + 1;
+	var currentYear = currentDate.getFullYear();
+	var spentObj;
+	if (localStorage.spentList != "") {
+		spentList = JSON.parse(localStorage.spentList);
+	}	
+	
+	if(currentDay < localStorage.interval) {
+		var startDate = new Date(currentYear, currentMonth - 2, localStorage.interval);
+		var endDate = new Date(currentYear, currentMonth - 1, localStorage.interval);
+		for (x in spentList) {
+			var spentObj = spentList[x];
+			var timestampAsDate = spentObj.timestamp;
+			timestampAsDate = new Date(timestampAsDate);
+			if(timestampAsDate > startDate && timestampAsDate < endDate) {
+				if(localStorage.spentPeriod == null || localStorage.spentPeriod == undefined) {
+					countCategorySpentNew(spentObj.type, spentObj.value);
+				} else {
+					countCategorySpent(spentObj.type, spentObj.value);
+				}
+			}
+		}
+	} else {
+		var startDate = new Date(currentYear, currentMonth - 1, localStorage.interval);
+		var endDate = new Date(currentYear, currentMonth - 1, localStorage.interval);
+		for (x in spentList) {
+			var spentObj = spentList[x];
+			var timestampAsDate = spentObj.timestamp;
+			timestampAsDate = new Date(timestampAsDate);
+			if(timestampAsDate > startDate && timestampAsDate < endDate) {
+				if(localStorage.spentPeriod == null || localStorage.spentPeriod == undefined) {
+					countCategorySpentNew(spentObj.type, spentObj.value);
+				} else {
+					countCategorySpent(spentObj.type, spentObj.value);
+				}
+			}
+		}
+	}
+	
+	spentList = [];
+}
+
+function countIncomeCategoryPeriod() {
+	var currentDate = new Date();
+	var currentDaysOfMonth = daysInMonth(currentDate.getMonth() + 1, currentDate.getYear());
+	var prevDaysOfMonth = daysInMonth(currentDate.getMonth(), currentDate.getYear());
+	var currentDay = currentDate.getDate();
+	var currentMonth = currentDate.getMonth() + 1;
+	var currentYear = currentDate.getFullYear();
+	var incomeObj;
+	if (localStorage.incomeList != "") {
+		incomeList = JSON.parse(localStorage.incomeList);
+	}	
+	
+	if(currentDay < localStorage.interval) {
+		var startDate = new Date(currentYear, currentMonth - 2, localStorage.interval);
+		var endDate = new Date(currentYear, currentMonth - 1, localStorage.interval);
+		for (x in incomeList) {
+			var incomeObj = incomeList[x];
+			var timestampAsDate = incomeObj.timestamp;
+			timestampAsDate = new Date(timestampAsDate);
+			if(timestampAsDate > startDate && timestampAsDate < endDate) {
+				if(localStorage.incomePeriod == null || localStorage.incomePeriod == undefined) {
+					countCategoryIncomeNew(incomeObj.type, incomeObj.value);
+				} else {
+					countCategoryIncome(incomeObj.type, incomeObj.value);
+				}
+			}
+		}
+	} else {
+		var startDate = new Date(currentYear, currentMonth - 1, localStorage.interval);
+		var endDate = new Date(currentYear, currentMonth - 1, localStorage.interval);
+		for (x in incomeList) {
+			var incomeObj = incomeList[x];
+			var timestampAsDate = incomeObj.timestamp;
+			timestampAsDate = new Date(timestampAsDate);
+			if(timestampAsDate > startDate && timestampAsDate < endDate) {
+				if(localStorage.incomePeriod == null || localStorage.incomePeriod == undefined) {
+					countCategoryIncomeNew(incomeObj.type, incomeObj.value);
+				} else {
+					countCategoryIncome(incomeObj.type, incomeObj.value);
+				}
+			}
+		}
+	}
+	
+	incomeList = [];
+}
+
+function countCategorySpentNew(category, value) {
+	switch (category) {
+	case "Verpflegung":
+		localStorage.spentVerpflegung = +value;
+	    break;
+	case "Einkaufen":
+		localStorage.spentEinkaufen = +value;
+	    break;
+	case "Auto":
+		localStorage.spentAuto = +value;
+	    break;
+	case "Wohnung":
+		localStorage.spentWohnung = +value;
+	    break;
+	case "Shopping":
+		localStorage.spentShopping = +value;
+	    break;
+	case "Andere":
+		localStorage.spentAndere = +value;
+	    break;
+	}
+}
+
+function countCategorySpent(category, value) {
+	switch (category) {
+	case "Verpflegung":
+		localStorage.spentVerpflegung = +localStorage.spentVerpflegung ++ +value;
+	    break;
+	case "Einkaufen":
+		localStorage.spentEinkaufen = +localStorage.spentEinkaufen ++ +value;
+	    break;
+	case "Auto":
+		localStorage.spentAuto = +localStorage.spentAuto ++ +value;
+	    break;
+	case "Wohnung":
+		localStorage.spentWohnung = +localStorage.spentWohnung ++ +value;
+	    break;
+	case "Shopping":
+		localStorage.spentShopping = +localStorage.spentShopping ++ +value;
+	    break;
+	case "Andere":
+		localStorage.spentAndere = +localStorage.spentAndere ++ +value;
+	    break;
+	}
+}
+
+function countCategoryIncomeNew(category, value) {
+	switch (category) {
+	case "Geschenk":
+		localStorage.incomeGeschenk = +value;
+	    break;
+	case "Investition":
+		localStorage.incomeInvestition = +value;
+	    break;
+	case "Verkauf":
+		localStorage.incomeVerkauf = +value;
+	    break;
+	case "Andere":
+		localStorage.incomeAndere = +value;
+	    break;
+	}
+}
+
+function countCategoryIncome(category, value) {
+	switch (category) {
+	case "Geschenk":
+		localStorage.incomeGeschenk = +localStorage.incomeGeschenk ++ +value;
+	    break;
+	case "Investition":
+		localStorage.incomeInvestition = +localStorage.incomeInvestition ++ +value;
+	    break;
+	case "Verkauf":
+		localStorage.incomeVerkauf = +localStorage.incomeVerkauf ++ +value;
+	    break;
+	case "Andere":
+		localStorage.incomeAndere = +localStorage.incomeAndere ++ +value;
+	    break;
+	}
+}
+
+function calculateCategoryAsPercent() {
+	localStorage.spentVerpflegungPercent = +calculatePercentage(+localStorage.spentPeriod, +localStorage.spentToday, +localStorage.spentVerpflegung);
+	localStorage.spentEinkaufenPercent = +calculatePercentage(+localStorage.spentPeriod, +localStorage.spentToday, +localStorage.spentEinkaufen);
+	localStorage.spentAutoPercent = +calculatePercentage(+localStorage.spentPeriod, +localStorage.spentToday, +localStorage.spentAuto);
+	localStorage.spentWohnungPercent = +calculatePercentage(+localStorage.spentPeriod, +localStorage.spentToday, +localStorage.spentWohnung);
+	localStorage.spentShoppingPercent = +calculatePercentage(+localStorage.spentPeriod, +localStorage.spentToday, +localStorage.spentShopping);
+	localStorage.spentAnderePercent = +calculatePercentage(+localStorage.spentPeriod, +localStorage.spentToday, +localStorage.spentAndere);
+	
+	localStorage.incomeGeschenkPercent = +calculatePercentage(+localStorage.incomePeriod, +localStorage.incomeToday, +localStorage.incomeGeschenk);
+	localStorage.incomeInvestitionPercent = +calculatePercentage(+localStorage.incomePeriod, +localStorage.incomeToday, +localStorage.incomeInvestition);
+	localStorage.incomeVerkaufPercent = +calculatePercentage(+localStorage.incomePeriod, +localStorage.incomeToday, +localStorage.incomeVerkauf);
+	localStorage.incomeAnderePercent = +calculatePercentage(+localStorage.incomePeriod, +localStorage.incomeToday, +localStorage.incomeAndere);
+}
+
+function calculatePercentage(totalAmount, currentDayAmount, categoryAmount) {
+	var resultTotal = +(100 / (+totalAmount + +currentDayAmount)) * +categoryAmount;
+	return resultTotal;
+}
+
+function viewGraph() {
+	localStorage.spentVerpflegung = 0;
+	localStorage.spentEinkaufen = 0;
+	localStorage.spentAuto = 0;
+	localStorage.spentWohnung = 0;
+	localStorage.spentShopping = 0;
+	localStorage.spentAndere = 0;
+	
+	localStorage.incomeGeschenk = 0;
+	localStorage.incomeInvestition = 0;
+	localStorage.incomeVerkauf = 0;
+	localStorage.incomeAndere = 0;
+	
+	localStorage.spentVerpflegungPercent = 0;
+	localStorage.spentEinkaufenPercent = 0;
+	localStorage.spentAutoPercent = 0;
+	localStorage.spentWohnungPercent = 0;
+	localStorage.spentShoppingPercent = 0;
+	localStorage.spentAnderePercent = 0;
+	
+	localStorage.incomeGeschenkPercent = 0;
+	localStorage.incomeInvestitionPercent = 0;
+	localStorage.incomeVerkaufPercent = 0;
+	localStorage.incomeAnderePercent = 0;
+	
+	
+	countSpentCategoryPeriod();
+	countIncomeCategoryPeriod();
+	calculateCategoryAsPercent();
+	
+	document.getElementById("graphVerpflegung").innerHTML = parseInt(+localStorage.spentVerpflegung);
+	document.getElementById("graphEinkaufen").innerHTML = parseInt(+localStorage.spentEinkaufen);
+	document.getElementById("graphAuto").innerHTML = parseInt(+localStorage.spentAuto);
+	document.getElementById("graphWohnung").innerHTML = parseInt(+localStorage.spentWohnung);
+	document.getElementById("graphShopping").innerHTML = parseInt(+localStorage.spentShopping);
+	document.getElementById("graphAndereAusgaben").innerHTML = parseInt(+localStorage.spentAndere);
+	
+	document.getElementById("graphGeschenk").innerHTML = parseInt(+localStorage.incomeGeschenk);
+	document.getElementById("graphInvestition").innerHTML = parseInt(+localStorage.incomeInvestition);
+	document.getElementById("graphVerkauf").innerHTML = parseInt(+localStorage.incomeVerkauf);
+	document.getElementById("graphAndereEinnahmen").innerHTML = parseInt(+localStorage.incomeAndere);
+	
+	
+	document.getElementById("graphVerpflegungPercent").innerHTML = parseInt(+localStorage.spentVerpflegungPercent);
+	document.getElementById("graphEinkaufenPercent").innerHTML = parseInt(+localStorage.spentEinkaufenPercent);
+	document.getElementById("graphAutoPercent").innerHTML = parseInt(+localStorage.spentAutoPercent);
+	document.getElementById("graphWohnungPercent").innerHTML = parseInt(+localStorage.spentWohnungPercent);
+	document.getElementById("graphShoppingPercent").innerHTML = parseInt(+localStorage.spentShoppingPercent);
+	document.getElementById("graphAndereAusgabenPercent").innerHTML = parseInt(+localStorage.spentAnderePercent);
+	
+	document.getElementById("graphGeschenkPercent").innerHTML = parseInt(+localStorage.incomeGeschenkPercent);
+	document.getElementById("graphInvestitionPercent").innerHTML = parseInt(+localStorage.incomeInvestitionPercent);
+	document.getElementById("graphVerkaufPercent").innerHTML = parseInt(+localStorage.incomeVerkaufPercent);
+	document.getElementById("graphAndereEinnahmenPercent").innerHTML = parseInt(+localStorage.incomeAnderePercent);
+	
+	
+	document.getElementById("graphTotalEinnahmen").innerHTML = parseInt(+localStorage.incomePeriod + +localStorage.incomeToday);
+	
+	document.getElementById("graphTotalAusgaben").innerHTML = parseInt(+localStorage.spentPeriod + +localStorage.spentToday);
+	
 }

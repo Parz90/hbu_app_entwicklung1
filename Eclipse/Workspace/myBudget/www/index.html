@@ -19,7 +19,7 @@
     <body onload="recoverSettings(); calculate();">
         <div data-role="page" data-theme="a" id="page1">
         	<div data-role="header" class="header">
-        		<a class="header-link" href="#page4" data-transition="fade" data-icon="eye" onclick="calculate();"></a>
+        		<a class="header-link" href="#page4" data-transition="fade" data-icon="eye" onclick="calculate(); viewGraph();"></a>
         		<a class="header-link" href="#page5" data-transition="fade" data-icon= "gear" data-iconpos="right" onclick="calculate();"></a>
         	</div>
         
@@ -125,6 +125,59 @@
         </div>
         <div data-role="content">
         <h1 align="center">Grafik</h1>
+        		<div class="ui-grid-b">
+        		  	<div class="ui-block-a" align="left"><label><b><u>Einnahmen</u></b></label></div>
+        			<div class="ui-block-b" align="left"><label><b><u>CHF</u></b></label></div>
+        			<div class="ui-block-c" align="left"><label><b><u>%</u></b></label></div>
+        		  	<div class="ui-block-a" align="left"><label></label></div>
+        			<div class="ui-block-b" align="left"><label></label></div>
+        			<div class="ui-block-c" align="left"><label></label></div>
+        			<div class="ui-block-a" align="left"><label><b>Geschenk:</b></label></div>
+        			<div class="ui-block-b" align="left"><label id="graphGeschenk"></label></div>
+        			<div class="ui-block-c" align="left"><label id="graphGeschenkPercent"></label></div>
+        			<div class="ui-block-a" align="left"><label><b>Investition:</b></label></div>
+        			<div class="ui-block-b" align="left"><label id="graphInvestition"></label></div>
+        			<div class="ui-block-c" align="left"><label id="graphInvestitionPercent"></label></div>
+        			<div class="ui-block-a" align="left"><label><b>Verkauf:</b></label></div>
+        			<div class="ui-block-b" align="left"><label id="graphVerkauf"></label></div>
+        			<div class="ui-block-c" align="left"><label id="graphVerkaufPercent"></label></div>
+        			<div class="ui-block-a" align="left"><label><b>Andere:</b></label></div>
+        			<div class="ui-block-b" align="left"><label id="graphAndereEinnahmen"></label></div>
+        			<div class="ui-block-c" align="left"><label id="graphAndereEinnahmenPercent"></label></div>
+      			<div class="ui-block-a" align="left"><label><b>TOTAL:</b></label></div>
+        			<div class="ui-block-b" align="left"><label id="graphTotalEinnahmen"></label></div>
+        			<div class="ui-block-c" align="left"><label>100%</label></div>
+        		</div>
+        		<p></p>
+        	  	<div class="ui-grid-b">
+        		  	<div class="ui-block-a" align="left"><label><b><u>Ausgaben</u></b></label></div>
+        			<div class="ui-block-b" align="left"><label><b><u>CHF</u></b></label></div>
+        			<div class="ui-block-c" align="left"><label><b><u>%</u></b></label></div>
+        		  	<div class="ui-block-a" align="left"><label></label></div>
+        			<div class="ui-block-b" align="left"><label></label></div>
+        			<div class="ui-block-c" align="left"><label></label></div>
+        			<div class="ui-block-a" align="left"><label><b>Verpflegung:</b></label></div>
+        			<div class="ui-block-b" align="left"><label id="graphVerpflegung"></label></div>
+        			<div class="ui-block-c" align="left"><label id="graphVerpflegungPercent"></label></div>
+        			<div class="ui-block-a" align="left"><label><b>Einkaufen:</b></label></div>
+        			<div class="ui-block-b" align="left"><label id="graphEinkaufen"></label></div>
+        			<div class="ui-block-c" align="left"><label id="graphEinkaufenPercent"></label></div>
+        			<div class="ui-block-a" align="left"><label><b>Auto:</b></label></div>
+        			<div class="ui-block-b" align="left"><label id="graphAuto"></label></div>
+        			<div class="ui-block-c" align="left"><label id="graphAutoPercent"></label></div>
+        			<div class="ui-block-a" align="left"><label><b>Wohnung:</b></label></div>
+        			<div class="ui-block-b" align="left"><label id="graphWohnung"></label></div>
+        			<div class="ui-block-c" align="left"><label id="graphWohnungPercent"></label></div>
+        			<div class="ui-block-a" align="left"><label><b>Shopping:</b></label></div>
+        			<div class="ui-block-b" align="left"><label id="graphShopping"></label></div>
+        			<div class="ui-block-c" align="left"><label id="graphShoppingPercent"></label></div>
+        			<div class="ui-block-a" align="left"><label><b>Andere:</b></label></div>
+        			<div class="ui-block-b" align="left"><label id="graphAndereAusgaben"></label></div>
+        			<div class="ui-block-c" align="left"><label id="graphAndereAusgabenPercent"></label></div>
+        			<div class="ui-block-a" align="left"><label><b>TOTAL:</b></label></div>
+        			<div class="ui-block-b" align="left"><label id="graphTotalAusgaben"></label></div>
+        			<div class="ui-block-c" align="left"><label>100%</label></div>
+        		</div>
         </div>
         <div data-role="footer" data-position="fixed">
         <p>Copyright by Parz</p>        
